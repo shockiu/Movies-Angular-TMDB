@@ -24,7 +24,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/swiper/swiper-bundle.min.css"
             ],
             "scripts": []
           },
@@ -119,6 +120,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "movies-app"
+    }
+  },
+  "defaultProject": "movies-app",
+  "cli": {
+    "analytics": "007849bc-d0a6-4c4f-b042-4251768f9b29"
+  }
 }
