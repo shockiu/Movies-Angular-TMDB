@@ -14,7 +14,6 @@ export class SlideCastComponent implements OnInit, AfterViewInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.cast);
   }
 
   ngAfterViewInit() {

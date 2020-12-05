@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { MoviesService } from '../../services/movies.service';
 import { Movies } from '../../interfaces/movies.interfaces';
 
@@ -8,7 +8,7 @@ import { Movies } from '../../interfaces/movies.interfaces';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   public movies: Movies[] = [];
   public moviesSlide: Movies[] = [];
@@ -32,12 +32,26 @@ export class HomeComponent implements OnInit {
   constructor( private moviesServices: MoviesService ) { }
 
   ngOnInit(): void {
-    this.moviesServices.getMoviesNowPlaying()
-                    .subscribe( movie => {
-                      this.movies = movie;
-                      this.moviesSlide = movie;
-                    });
 
+    if( localStorage.getItem('posterPeliculas') && localStorage.getItem('slidePeliculas') && localStorage.getItem('pageCounter') ) {
+      this.movies = JSON.parse(localStorage.getItem('posterPeliculas'));
+      this.moviesSlide = JSON.parse(localStorage.getItem('slidePeliculas'));
+      this.moviesServices.pageCounter = JSON.parse( localStorage.getItem('pageCounter') )
+    } else {
+      this.moviesServices.getMoviesNowPlaying()
+            .subscribe( movie => {
+              this.movies = movie;
+              this.moviesSlide = movie;
+            });
+    }
+
+  }
+
+  ngOnDestroy() {
+    localStorage.setItem('posterPeliculas', JSON.stringify(this.movies));
+    localStorage.setItem('slidePeliculas', JSON.stringify(this.moviesSlide));
+    localStorage.setItem('pageCounter', JSON.stringify(this.moviesServices.pageCounter));
+    this.moviesServices.pageCounter = 1;
   }
 
 }

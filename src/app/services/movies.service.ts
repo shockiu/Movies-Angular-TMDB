@@ -15,6 +15,8 @@ export class MoviesService {
   private baseUrl: string = 'https://api.themoviedb.org/3';
   public pageCounter: number = 1;
   public cargando: boolean = false;
+  public movies: Movies[] = [];
+  public moviesSilde: Movies[] = [];
 
   get params() {
     return {
@@ -41,7 +43,11 @@ export class MoviesService {
         this.pageCounter += 1;
         this.cargando = false;
       }),
-      map(res => res.results )
+      map(res => {
+
+        return res.results
+      } ),
+      catchError(err => console.error)
     )
   }
 
@@ -53,7 +59,7 @@ export class MoviesService {
         params: params
       }).pipe(
         map( res => res.results)
-        )
+      )
 
   }
 
